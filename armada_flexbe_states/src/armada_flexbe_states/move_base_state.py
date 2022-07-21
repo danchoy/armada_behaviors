@@ -7,6 +7,8 @@ from actionlib_msgs.msg import GoalStatus
 from move_base_msgs.msg import *
 from geometry_msgs.msg import Pose, Point, Quaternion, Pose2D
 from tf import transformations
+import rospy
+
 
 """
 Created on 11/19/2015
@@ -24,18 +26,22 @@ class MoveBaseState(EventState):
     <= failed                   Navigation to target pose failed.
     """
 
-    def __init__(self):
+    def __init__(self, a, b, t):
         """Constructor"""
 
-        super(MoveBaseState, self).__init__(outcomes = ['arrived', 'failed'],
-                                            input_keys = ['waypoint'])
+        super(MoveBaseState, self).__init__(outcomes = ['arrived', 'failed'])
 
-        self._action_topic = "/move_base"
+        self._action_topic = "move_base"
 
         self._client = ProxyActionClient({self._action_topic: MoveBaseAction})
 
         self._arrived = False
         self._failed = False
+        self._x = (a / 100.0)
+        self._y = (b / 100.0)
+        self._theta = t
+        rospy.logerr("self.x = %.1f, self.y = %.1f", self._x, self._y)
+
 
 
     def execute(self, userdata):
@@ -67,8 +73,9 @@ class MoveBaseState(EventState):
         # Create and populate action goal
         goal = MoveBaseGoal()
 
-        pt = Point(x = userdata.waypoint.x, y = userdata.waypoint.y)
-        qt = transformations.quaternion_from_euler(0, 0, userdata.waypoint.theta)
+
+        pt = Point(x = self._x , y = self._y)
+        qt = transformations.quaternion_from_euler(0, 0, self._theta)
 
         goal.target_pose.pose = Pose(position = pt,
                                      orientation = Quaternion(*qt))
@@ -79,10 +86,11 @@ class MoveBaseState(EventState):
         # Send the action goal for execution
         try:
             self._client.send_goal(self._action_topic, goal)
+
         except Exception as e:
             Logger.logwarn("Unable to send navigation action goal:\n%s" % str(e))
             self._failed = True
-            
+
     def cancel_active_goals(self):
         if self._client.is_available(self._action_topic):
             if self._client.is_active(self._action_topic):

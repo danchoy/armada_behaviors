@@ -9,67 +9,69 @@ from armada_flexbe_utilities.srv import GetPointCloud, GetPointCloudResponse, Ge
 
 
 class getPointCloudState(EventState):
-        '''
-        Example for a state to demonstrate which functionality is available for state implementation.
-        This example lets the behavior wait until the given target_time has passed since the behavior has been started.
+    '''
+    Example for a state to demonstrate which functionality is available for state implementation.
+    This example lets the behavior wait until the given target_time has passed since the behavior has been started.
 
-        -- camera_topic                 string          The desired camera_topic
+    -- camera_topic                 string          The desired camera_topic
 
-        ># pointcloud_list                              List of PointCloud2 messages
-        #> pointcloud_list                              List of PointCloud2 messages
+    ># pointcloud_list                              List of PointCloud2 messages
+    #> pointcloud_list                              List of PointCloud2 messages
 
-        <= continue                                     retrieved the pointcloud successfully
-        <= failed                                       something went wrong
+    <= continue                                     retrieved the pointcloud successfully
+    <= failed                                       something went wrong
 
-        '''
+    '''
 
-        def __init__(self, camera_topic):
-                # Declare outcomes, input_keys, and output_keys by calling the super constructor with the corresponding arguments.
-                super(getPointCloudState, self).__init__(outcomes = ['continue', 'failed'],
-                                                       input_keys = ['pointcloud_list'],
-                                                       output_keys = ['pointcloud_list'])
+    def __init__(self, camera_topic):
+            # Declare outcomes, input_keys, and output_keys by calling the super constructor with the corresponding arguments.
+            super(getPointCloudState, self).__init__(outcomes = ['continue', 'failed'],
+                                                   input_keys = ['pointcloud_list'],
+                                                   output_keys = ['pointcloud_list'])
 
-                self._camera_topic = camera_topic
+            self._camera_topic = camera_topic
 
-        def execute(self, userdata):
-                # This method is called periodically while the state is active.
-                # Main purpose is to check state conditions and trigger a corresponding outcome.
-                # If no outcome is returned, the state will stay active.
+    def execute(self, userdata):
+            # This method is called periodically while the state is active.
+            # Main purpose is to check state conditions and trigger a corresponding outcome.
+            # If no outcome is returned, the state will stay active.
 
-                rospy.wait_for_service('/get_pointcloud')
-                self._service_topic = '/get_pointcloud'
-                self._service = ProxyServiceCaller({self._service_topic: GetPointCloud})
-                response = GetPointCloudResponse()
 
-                try:
-                    response = self._service.call(self._service_topic, self._camera_topic)
-                    userdata.pointcloud_list.append(response.cloud_out)
-                    return "continue"
-                except:
-                    return "failed"
+            rospy.wait_for_service('/get_pointcloud')
+            self._service_topic = '/get_pointcloud'
+            self._service = ProxyServiceCaller({self._service_topic: GetPointCloud})
+            response = GetPointCloudResponse()
 
-        def on_enter(self, userdata):
-                # This method is called when the state becomes active, i.e. a transition from another state to this one is taken.
-                # It is primarily used to start actions which are associated with this state.
+            try:
+                response = self._service.call(self._service_topic, self._camera_topic)
+                userdata.pointcloud_list.append(response.cloud_out)
+                return "continue"
+            except:
+                return "failed"
 
-                Logger.loginfo('getting pointcloud snapshot...' )
 
-        def on_exit(self, userdata):
-                # This method is called when an outcome is returned and another state gets active.
-                # It can be used to stop possibly running processes started by on_enter.
+    def on_enter(self, userdata):
+            # This method is called when the state becomes active, i.e. a transition from another state to this one is taken.
+            # It is primarily used to start actions which are associated with this state.
 
-                pass # Nothing to do in this state.
+            Logger.loginfo('getting pointcloud snapshot...' )
 
-        def on_start(self):
-                # This method is called when the behavior is started.
-                # If possible, it is generally better to initialize used resources in the constructor
-                # because if anything failed, the behavior would not even be started.
+    def on_exit(self, userdata):
+            # This method is called when an outcome is returned and another state gets active.
+            # It can be used to stop possibly running processes started by on_enter.
 
-                pass # Nothing to do in this state.
+            pass # Nothing to do in this state.
 
-        def on_stop(self):
-                # This method is called whenever the behavior stops execution, also if it is cancelled.
-                # Use this event to clean up things like claimed resources.
+    def on_start(self):
+            # This method is called when the behavior is started.
+            # If possible, it is generally better to initialize used resources in the constructor
+            # because if anything failed, the behavior would not even be started.
 
-                pass # Nothing to do in this state.
+            pass # Nothing to do in this state.
+
+    def on_stop(self):
+            # This method is called whenever the behavior stops execution, also if it is cancelled.
+            # Use this event to clean up things like claimed resources.
+
+            pass # Nothing to do in this state.
 
