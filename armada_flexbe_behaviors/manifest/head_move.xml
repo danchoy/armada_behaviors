@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="head_move">
+
+	<executable package_path="armada_flexbe_behaviors.head_move_sm" class="head_moveSM" />
+	<tagstring>headmoving</tagstring>
+	<author>Dan</author>
+	<date>Wed Jul 20 2022</date>
+	<description>
+		robot moving head
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+	<params>
+
+		<param type="text" name="frame_name" default="map" label="frame_name" hint="Sets the frame_name" />
+
+		<param type="numeric" name="head_pose_x" default="0" label="head_pose_x" hint="Sets the head_pose_x">
+			<min value="-100" />
+			<max value="100" />
+		</param>
+
+		<param type="numeric" name="head_pose_y" default="0" label="head_pose_y" hint="Sets the head_pose_y">
+			<min value="-100" />
+			<max value="100" />
+		</param>
+
+		<param type="numeric" name="head_pose_z" default="0" label="head_pose_z" hint="Sets the head_pose_z">
+			<min value="-100" />
+			<max value="100" />
+		</param>
+
+	</params>
+
+
+</behavior>

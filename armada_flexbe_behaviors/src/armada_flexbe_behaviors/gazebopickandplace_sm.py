@@ -8,15 +8,15 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
+from armada_Dan_flexbe_states.get_pc_service_state import getPointCloudState as armada_Dan_flexbe_states__getPointCloudState
 from armada_flexbe_states.calculate_grasp_waypoints_state import calculateGraspWaypointsServiceState
 from armada_flexbe_states.concatenate_pointcloud_service_state import concatenatePointCloudState
 from armada_flexbe_states.delete_model_state import deleteObjectState
 from armada_flexbe_states.get_grasp_candidates_service_state import getGraspCandidateState
-from armada_flexbe_states.get_pointcloud_service_state import getPointCloudState
 from armada_flexbe_states.move_arm_action_state import MoveArmActionState
-from armada_flexbe_states.pointcloud_passthrough_filter_service_state import pointCloudPassthroughFilterState
-from armada_flexbe_states.publish_pointcloud_state import publishPointCloudState
-from armada_flexbe_states.sac_segmentation_service_state import pointCloudSacSegmentationState
+from armada_flexbe_states.pointcloud_passthrough_filter_service_state import pointCloudPassthroughFilterState as armada_flexbe_states__pointCloudPassthroughFilterState
+from armada_flexbe_states.publish_pointcloud_state import publishPointCloudState as armada_flexbe_states__publishPointCloudState
+from armada_flexbe_states.sac_segmentation_service_state import pointCloudSacSegmentationState as armada_flexbe_states__pointCloudSacSegmentationState
 from armada_flexbe_states.snapshot_commander_state import snapshotCommanderState
 from armada_flexbe_states.spawn_model_state import spawnObjectState
 from sandbox_flexbe_states.step_iterator_state import stepIteratorState
@@ -42,7 +42,7 @@ class GazeboPickAndPlaceSM(Behavior):
 
 		# parameters of this behavior
 		self.add_parameter('model_name', 'coke_can')
-		self.add_parameter('object_file_path', '/home/.gazebo/models/coke_can/model.sdf')
+		self.add_parameter('object_file_path', '/home/csrobot/.gazebo/gazebo_models/coke_can/model.sdf')
 		self.add_parameter('robot_namespace', '')
 		self.add_parameter('reference_frame', 'world')
 		self.add_parameter('wait_time', 2)
@@ -135,21 +135,21 @@ class GazeboPickAndPlaceSM(Behavior):
 
 			# x:784 y:153
 			OperatableStateMachine.add('PointCloudPassthroughFilter',
-										pointCloudPassthroughFilterState(x_min=-1.125, x_max=-0.225, y_min=-0.6, y_max=0.6, z_min=-0.1, z_max=0.15),
+										armada_flexbe_states__pointCloudPassthroughFilterState(x_min=-1.125, x_max=-0.225, y_min=-0.6, y_max=0.6, z_min=-0.1, z_max=0.15),
 										transitions={'continue': 'PointCloudSacSegmentation', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud_in': 'combined_pointcloud', 'pointcloud_out': 'combined_pointcloud'})
 
 			# x:784 y:246
 			OperatableStateMachine.add('PointCloudSacSegmentation',
-										pointCloudSacSegmentationState(),
+										armada_flexbe_states__pointCloudSacSegmentationState(),
 										transitions={'continue': 'PublishPointCloud', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud_in': 'combined_pointcloud', 'pointcloud_out': 'combined_pointcloud'})
 
 			# x:814 y:327
 			OperatableStateMachine.add('PublishPointCloud',
-										publishPointCloudState(topic=self.concatenated_cloud_topic),
+										armada_flexbe_states__publishPointCloudState(topic=self.concatenated_cloud_topic),
 										transitions={'continue': 'GetGraspCandidates', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud': 'combined_pointcloud'})
@@ -176,7 +176,7 @@ class GazeboPickAndPlaceSM(Behavior):
 
 			# x:408 y:256
 			OperatableStateMachine.add('getPointCloud',
-										getPointCloudState(camera_topic=self.camera_topic),
+										armada_Dan_flexbe_states__getPointCloudState(camera_topic=self.camera_topic),
 										transitions={'continue': 'SnapshotStepIterator', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud_list': 'pointcloud_list'})

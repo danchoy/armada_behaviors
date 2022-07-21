@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="spawn_move">
+
+	<executable package_path="armada_flexbe_behaviors.spawn_move_sm" class="spawn_moveSM" />
+	<tagstring>spawnmoving</tagstring>
+	<author>Dan</author>
+	<date>Mon Jul 18 2022</date>
+	<description>
+		spawning objects and moving robot
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="spawn_objects" />
+	<contains name="robot_move" />
+
+	<!-- Available Parameters -->
+
+</behavior>

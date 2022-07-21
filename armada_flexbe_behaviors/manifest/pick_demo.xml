@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="pick_demo">
+
+	<executable package_path="armada_flexbe_behaviors.pick_demo_sm" class="pick_demoSM" />
+	<tagstring>pick</tagstring>
+	<author>Dan</author>
+	<date>Wed Jul 20 2022</date>
+	<description>
+		picking soda can demo
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="spawn_objects" />
+	<contains name="torso_action" />
+
+	<!-- Available Parameters -->
+
+</behavior>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="point_cloud_state">
+
+	<executable package_path="armada_flexbe_behaviors.point_cloud_state_sm" class="point_cloud_stateSM" />
+	<tagstring>pointcloud</tagstring>
+	<author>Dan</author>
+	<date>Mon Jul 18 2022</date>
+	<description>
+		getting pointcloud from headcamera and filter it
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+	<params>
+
+		<param type="text" name="topic" default="/head_camera/depth_registered/points" label="topic" hint="Sets the topic" />
+
+		<param type="numeric" name="x_min" default="0" label="x_min" hint="Sets the x_min">
+			<min value="-10" />
+			<max value="10" />
+		</param>
+
+		<param type="numeric" name="y_min" default="-1" label="y_min" hint="Sets the y_min">
+			<min value="-10" />
+			<max value="10" />
+		</param>
+
+		<param type="numeric" name="z_min" default="0" label="z_min" hint="Sets the z_min">
+			<min value="-10" />
+			<max value="10" />
+		</param>
+
+		<param type="numeric" name="x_max" default="2" label="x_max" hint="Sets the x_max">
+			<min value="-10" />
+			<max value="10" />
+		</param>
+
+		<param type="numeric" name="y_max" default="1" label="y_max" hint="Sets the y_max">
+			<min value="-10" />
+			<max value="10" />
+		</param>
+
+		<param type="numeric" name="z_max" default="2" label="z_max" hint="Sets the z_max">
+			<min value="-10" />
+			<max value="10" />
+		</param>
+
+		<param type="text" name="publish_topic" default="trans_cloud" label="publish_topic" hint="Sets the publish_topic" />
+
+	</params>
+
+
+</behavior>

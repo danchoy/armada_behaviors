@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="robot_move">
+
+	<executable package_path="armada_flexbe_behaviors.robot_move_sm" class="robot_moveSM" />
+	<tagstring>moving</tagstring>
+	<author>Dan</author>
+	<date>Mon Jul 18 2022</date>
+	<description>
+		robot approching to the table
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+	<params>
+
+		<param type="numeric" name="theta" default="5" label="theta" hint="Sets the theta">
+			<min value="-360" />
+			<max value="360" />
+		</param>
+
+		<param type="numeric" name="robot_goal_pose_x" default="0" label="robot_goal_pose_x" hint="Sets the robot_goal_pose_x">
+			<min value="-100" />
+			<max value="100" />
+		</param>
+
+		<param type="numeric" name="robot_goal_pose_y" default="-720" label="robot_goal_pose_y" hint="Sets the robot_goal_pose_y">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="numeric" name="robot_ori_pose_z" default="0.8565" label="robot_ori_pose_z" hint="Sets the robot_ori_pose_z">
+			<min value="-10" />
+			<max value="10" />
+		</param>
+
+		<param type="numeric" name="robot_ori_pose_w" default="0.516" label="robot_ori_pose_w" hint="Sets the robot_ori_pose_w">
+			<min value="-10" />
+			<max value="10" />
+		</param>
+
+		<param type="numeric" name="torso_pose_x" default="0.4" label="torso_pose_x" hint="Sets the torso_pose_x">
+			<min value="0" />
+			<max value="1" />
+		</param>
+
+		<param type="text" name="torso_joint_name" default="torso_lift_joint" label="torso_joint_name" hint="Sets the torso_joint_name" />
+
+		<param type="numeric" name="head_pose_x" default="0" label="head_pose_x" hint="Sets the head_pose_x">
+			<min value="-100" />
+			<max value="100" />
+		</param>
+
+		<param type="numeric" name="head_pose_y" default="-800" label="head_pose_y" hint="Sets the head_pose_y">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="numeric" name="head_pose_z" default="50" label="head_pose_z" hint="Sets the head_pose_z">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="text" name="head_frame" default="map" label="head_frame" hint="Sets the head_frame" />
+
+	</params>
+
+
+</behavior>

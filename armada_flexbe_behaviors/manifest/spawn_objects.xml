@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="spawn_objects">
+
+	<executable package_path="armada_flexbe_behaviors.spawn_objects_sm" class="spawn_objectsSM" />
+	<tagstring>spawn</tagstring>
+	<author>Dan</author>
+	<date>Mon Jul 18 2022</date>
+	<description>
+		spawning obj into sim
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+	<params>
+
+		<param type="text" name="table_path" default="/home/csrobot/.gazebo/gazebo_models/table/model.sdf" label="table_path" hint="Sets the table_path" />
+
+		<param type="text" name="table" default="table" label="table" hint="Sets the table" />
+
+		<param type="text" name="namespace" default="test" label="namespace" hint="Sets the namespace" />
+
+		<param type="text" name="frame" default="world" label="frame" hint="Sets the frame" />
+
+		<param type="text" name="coke_path" default="/home/csrobot/.gazebo/gazebo_models/demo_cube/model.sdf" label="coke_path" hint="Sets the coke_path" />
+
+		<param type="text" name="demo_cube" default="demo_cube" label="demo_cube" hint="Sets the demo_cube" />
+
+		<param type="numeric" name="item_pose_x" default="0" label="item_pose_x" hint="Sets the item_pose_x">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="numeric" name="item_pose_y" default="-800" label="item_pose_y" hint="Sets the item_pose_y">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="numeric" name="item_pose_z" default="0" label="item_pose_z" hint="Sets the item_pose_z">
+			<min value="0" />
+			<max value="1" />
+		</param>
+
+		<param type="numeric" name="grab_item_pose_z" default="200" label="grab_item_pose_z" hint="Sets the grab_item_pose_z">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="numeric" name="theta" default="-45" label="theta" hint="Sets the theta">
+			<min value="-360" />
+			<max value="360" />
+		</param>
+
+		<param type="text" name="side_wall_path" default="/home/csrobot/building_editor_models/4_side_wall/model.sdf" label="side_wall_path" hint="Sets the side_wall_path" />
+
+		<param type="text" name="side_wall" default="side_wall" label="side_wall" hint="Sets the side_wall" />
+
+		<param type="numeric" name="side_wall_x" default="0" label="side_wall_x" hint="Sets the side_wall_x">
+			<min value="0" />
+			<max value="1" />
+		</param>
+
+		<param type="numeric" name="side_wall_y" default="0" label="side_wall_y" hint="Sets the side_wall_y">
+			<min value="0" />
+			<max value="1" />
+		</param>
+
+		<param type="text" name="wall_1_path" default="/home/csrobot/building_editor_models/wall_1/model.sdf" label="wall_1_path" hint="Sets the wall_1_path" />
+
+		<param type="numeric" name="wall_1_pose_x" default="100" label="wall_1_pose_x" hint="Sets the wall_1_pose_x">
+			<min value="-100" />
+			<max value="100" />
+		</param>
+
+		<param type="numeric" name="wall_1_pose_y" default="-100" label="wall_1_pose_y" hint="Sets the wall_1_pose_y">
+			<min value="-100" />
+			<max value="100" />
+		</param>
+
+		<param type="text" name="wall_1" default="wall_1" label="wall_1" hint="Sets the wall_1" />
+
+		<param type="numeric" name="grab_item_pose_x" default="0" label="grab_item_pose_x" hint="Sets the grab_item_pose_x">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="numeric" name="grab_item_pose_y" default="-790" label="grab_item_pose_y" hint="Sets the grab_item_pose_y">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+	</params>
+
+
+</behavior>
