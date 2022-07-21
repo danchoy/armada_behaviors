@@ -23,6 +23,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   pcl_conversions
   pcl_ros
+  message_generation
 )
 
 ## Generate messages in the 'msg' folder
@@ -62,6 +63,7 @@ generate_messages(
 catkin_package(
   CATKIN_DEPENDS
   actionlib_msgs
+  message_runtime
 )
 
 include_directories(
@@ -86,5 +88,11 @@ target_link_libraries(get_pointcloud_service ${catkin_LIBRARIES})
 target_link_libraries(pointcloud_passthrough_filter_service ${catkin_LIBRARIES})
 target_link_libraries(sac_segmentation_service ${catkin_LIBRARIES})
 
-#add_dependencies(concatenate_pointcloud_service armada_flexbe_utilities_gencpp)
-#add_dependencies(get_pointcloud_service armada_flexbe_utilities_gencpp)
+add_dependencies(move_arm_cpp_server armada_flexbe_utilities_generate_messages)
+add_dependencies(get_grasp_candidates_service armada_flexbe_utilities_generate_messages)
+add_dependencies(grasp_waypoint_service armada_flexbe_utilities_generate_messages)
+add_dependencies(pointcloud_snapshot_service armada_flexbe_utilities_generate_messages)
+add_dependencies(concatenate_pointcloud_service armada_flexbe_utilities_generate_messages)
+add_dependencies(get_pointcloud_service armada_flexbe_utilities_generate_messages)
+add_dependencies(pointcloud_passthrough_filter_service armada_flexbe_utilities_generate_messages)
+add_dependencies(sac_segmentation_service armada_flexbe_utilities_generate_messages)

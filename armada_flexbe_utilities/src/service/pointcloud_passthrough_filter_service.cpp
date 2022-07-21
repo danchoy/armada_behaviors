@@ -9,6 +9,11 @@
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/extract_indices.h>
 #include <pcl/filters/passthrough.h>
+#include <pcl/segmentation/region_growing_rgb.h>
+#include <pcl/search/search.h>
+#include <pcl/search/kdtree.h>
+
+
 
 using namespace pcl;
 
@@ -28,7 +33,11 @@ bool passthroughFilter(armada_flexbe_utilities::PointCloudPassthroughFilter::Req
   ROS_WARN("Executing PassthroughFilter Service");
   ROS_WARN_STREAM("Number of points in cloud before filter: " << req.cloud_in.data.size());
   PointCloud<PointXYZRGB>::Ptr temp_cloud(new PointCloud<PointXYZRGB>);
+  pcl::search::Search <pcl::PointXYZRGB>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZRGB>);
+
+
   fromROSMsg(req.cloud_in, *temp_cloud);
+
 
   PassThrough<PointXYZRGB> pass_x;
   pass_x.setInputCloud (temp_cloud);
@@ -50,6 +59,8 @@ bool passthroughFilter(armada_flexbe_utilities::PointCloudPassthroughFilter::Req
   pass_z.setFilterLimits (req.z_min, req.z_max);
   //pass_z.setFilterLimitsNegative(false);
   pass_z.filter(*temp_cloud);
+
+
 
   toROSMsg(*temp_cloud, res.cloud_out);
   ROS_WARN_STREAM("Number of points in cloud after filter: " << res.cloud_out.data.size());
