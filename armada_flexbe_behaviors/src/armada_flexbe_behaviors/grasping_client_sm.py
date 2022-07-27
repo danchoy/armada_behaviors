@@ -8,7 +8,7 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
-from armada_flexbe_states.head_action_state import PointHeadState as armada_flexbe_states__PointHeadState
+from armada_flexbe_states.scene import update_scene
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -16,24 +16,20 @@ from armada_flexbe_states.head_action_state import PointHeadState as armada_flex
 
 
 '''
-Created on Wed Jul 20 2022
+Created on Mon Jul 25 2022
 @author: Dan
 '''
-class head_moveSM(Behavior):
+class grasping_clientSM(Behavior):
 	'''
-	robot moving head
+	grasping cude with flexbe
 	'''
 
 
 	def __init__(self):
-		super(head_moveSM, self).__init__()
-		self.name = 'head_move'
+		super(grasping_clientSM, self).__init__()
+		self.name = 'grasping_client'
 
 		# parameters of this behavior
-		self.add_parameter('frame_name', 'map')
-		self.add_parameter('head_pose_x', 100)
-		self.add_parameter('head_pose_y', 0)
-		self.add_parameter('head_pose_z', 50)
 
 		# references to used behaviors
 
@@ -58,8 +54,8 @@ class head_moveSM(Behavior):
 
 		with _state_machine:
 			# x:30 y:40
-			OperatableStateMachine.add('move_head',
-										armada_flexbe_states__PointHeadState(x=self.head_pose_x, y=self.head_pose_y, z=self.head_pose_z, frame_name=self.frame_name),
+			OperatableStateMachine.add('update_scene',
+										update_scene(),
 										transitions={'continue': 'finished', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
 

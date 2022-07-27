@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="graspable_update_scene">
+
+	<executable package_path="armada_flexbe_behaviors.graspable_update_scene_sm" class="graspable_update_sceneSM" />
+	<tagstring>graspable</tagstring>
+	<author>Dan</author>
+	<date>Tue Jul 26 2022</date>
+	<description>
+		graspable item and update scene
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+
+</behavior>

@@ -13,7 +13,8 @@
 
 	<!-- Contained Behaviors -->
 	<contains name="spawn_objects" />
-	<contains name="torso_action" />
+	<contains name="robot_move" />
+	<contains name="graspable_update_scene" />
 
 	<!-- Available Parameters -->
 

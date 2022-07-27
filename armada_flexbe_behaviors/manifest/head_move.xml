@@ -18,19 +18,19 @@
 
 		<param type="text" name="frame_name" default="map" label="frame_name" hint="Sets the frame_name" />
 
-		<param type="numeric" name="head_pose_x" default="0" label="head_pose_x" hint="Sets the head_pose_x">
-			<min value="-100" />
-			<max value="100" />
+		<param type="numeric" name="head_pose_x" default="100" label="head_pose_x" hint="Sets the head_pose_x">
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
 		<param type="numeric" name="head_pose_y" default="0" label="head_pose_y" hint="Sets the head_pose_y">
-			<min value="-100" />
-			<max value="100" />
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
-		<param type="numeric" name="head_pose_z" default="0" label="head_pose_z" hint="Sets the head_pose_z">
-			<min value="-100" />
-			<max value="100" />
+		<param type="numeric" name="head_pose_z" default="50" label="head_pose_z" hint="Sets the head_pose_z">
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
 	</params>

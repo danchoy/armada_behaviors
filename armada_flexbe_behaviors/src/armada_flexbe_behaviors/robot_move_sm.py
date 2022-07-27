@@ -11,6 +11,7 @@ from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyC
 from armada_flexbe_states.head_action_state import PointHeadState as armada_flexbe_states__PointHeadState
 from armada_flexbe_states.move_base_state import MoveBaseState as armada_flexbe_states__MoveBaseState
 from armada_flexbe_states.torso_action_state import TrajectoryAction as armada_flexbe_states__TrajectoryAction
+from flexbe_states.wait_state import WaitState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -34,7 +35,7 @@ class robot_moveSM(Behavior):
 		# parameters of this behavior
 		self.add_parameter('theta', 5)
 		self.add_parameter('robot_goal_pose_x', 0)
-		self.add_parameter('robot_goal_pose_y', -720)
+		self.add_parameter('robot_goal_pose_y', -700)
 		self.add_parameter('robot_ori_pose_z', 0.8565)
 		self.add_parameter('robot_ori_pose_w', 0.516)
 		self.add_parameter('torso_pose_x', 0.4)
@@ -75,10 +76,16 @@ class robot_moveSM(Behavior):
 			# x:215 y:26
 			OperatableStateMachine.add('move',
 										armada_flexbe_states__MoveBaseState(a=self.robot_goal_pose_x, b=self.robot_goal_pose_y, t=self.theta),
-										transitions={'arrived': 'head_move_action', 'failed': 'failed'},
+										transitions={'arrived': 'wait', 'failed': 'failed'},
 										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off})
 
-			# x:388 y:26
+			# x:380 y:22
+			OperatableStateMachine.add('wait',
+										WaitState(wait_time=2),
+										transitions={'done': 'head_move_action'},
+										autonomy={'done': Autonomy.Off})
+
+			# x:531 y:24
 			OperatableStateMachine.add('head_move_action',
 										armada_flexbe_states__PointHeadState(x=self.head_pose_x, y=self.head_pose_y, z=self.head_pose_z, frame_name=self.head_frame),
 										transitions={'continue': 'finished', 'failed': 'failed'},

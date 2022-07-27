@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="grasping_client">
+
+	<executable package_path="armada_flexbe_behaviors.grasping_client_sm" class="grasping_clientSM" />
+	<tagstring>grasping</tagstring>
+	<author>Dan</author>
+	<date>Mon Jul 25 2022</date>
+	<description>
+		grasping cude with flexbe
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+
+</behavior>

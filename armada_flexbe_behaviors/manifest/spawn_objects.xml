@@ -81,12 +81,12 @@
 
 		<param type="text" name="wall_1" default="wall_1" label="wall_1" hint="Sets the wall_1" />
 
-		<param type="numeric" name="grab_item_pose_x" default="0" label="grab_item_pose_x" hint="Sets the grab_item_pose_x">
+		<param type="numeric" name="grab_item_pose_x" default="30" label="grab_item_pose_x" hint="Sets the grab_item_pose_x">
 			<min value="-1000" />
 			<max value="1000" />
 		</param>
 
-		<param type="numeric" name="grab_item_pose_y" default="-790" label="grab_item_pose_y" hint="Sets the grab_item_pose_y">
+		<param type="numeric" name="grab_item_pose_y" default="-765" label="grab_item_pose_y" hint="Sets the grab_item_pose_y">
 			<min value="-1000" />
 			<max value="1000" />
 		</param>

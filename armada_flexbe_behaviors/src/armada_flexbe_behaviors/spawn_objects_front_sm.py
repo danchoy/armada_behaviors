@@ -8,6 +8,9 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
+from armada_Dan_flexbe_behaviors.torso_action_sm import torso_actionSM
+from armada_flexbe_behaviors.head_move_sm import head_moveSM
+from armada_flexbe_behaviors.point_cloud_state_sm import point_cloud_stateSM
 from armada_flexbe_states.spawn_model_state import spawnObjectState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
@@ -16,43 +19,38 @@ from armada_flexbe_states.spawn_model_state import spawnObjectState
 
 
 '''
-Created on Mon Jul 18 2022
+Created on Wed Jul 27 2022
 @author: Dan
 '''
-class spawn_objectsSM(Behavior):
+class spawn_objects_frontSM(Behavior):
 	'''
-	spawning obj into sim
+	Spawn objects in-front of robot
 	'''
 
 
 	def __init__(self):
-		super(spawn_objectsSM, self).__init__()
-		self.name = 'spawn_objects'
+		super(spawn_objects_frontSM, self).__init__()
+		self.name = 'spawn_objects_front'
 
 		# parameters of this behavior
 		self.add_parameter('table_path', '/home/csrobot/.gazebo/gazebo_models/table/model.sdf')
 		self.add_parameter('table', 'table')
 		self.add_parameter('namespace', 'test')
 		self.add_parameter('frame', 'world')
-		self.add_parameter('coke_path', '/home/csrobot/.gazebo/gazebo_models/demo_cube/model.sdf')
 		self.add_parameter('demo_cube', 'demo_cube')
-		self.add_parameter('item_pose_x', 0)
-		self.add_parameter('item_pose_y', -800)
+		self.add_parameter('item_pose_x', 150)
+		self.add_parameter('item_pose_y', 0)
 		self.add_parameter('item_pose_z', 0)
 		self.add_parameter('grab_item_pose_z', 200)
 		self.add_parameter('theta', -45)
-		self.add_parameter('side_wall_path', '/home/csrobot/building_editor_models/4_side_wall/model.sdf')
-		self.add_parameter('side_wall', 'side_wall')
-		self.add_parameter('side_wall_x', 0)
-		self.add_parameter('side_wall_y', 0)
-		self.add_parameter('wall_1_path', '/home/csrobot/building_editor_models/wall_1/model.sdf')
-		self.add_parameter('wall_1_pose_x', 100)
-		self.add_parameter('wall_1_pose_y', -100)
-		self.add_parameter('wall_1', 'wall_1')
-		self.add_parameter('grab_item_pose_x', 30)
-		self.add_parameter('grab_item_pose_y', -765)
+		self.add_parameter('grab_item_pose_x', 90)
+		self.add_parameter('grab_item_pose_y', 0)
+		self.add_parameter('coke_path', '/home/csrobot/.gazebo/gazebo_models/demo_cube/model.sdf')
 
 		# references to used behaviors
+		self.add_behavior(head_moveSM, 'head_move')
+		self.add_behavior(point_cloud_stateSM, 'point_cloud_state')
+		self.add_behavior(torso_actionSM, 'torso_action')
 
 		# Additional initialization code can be added inside the following tags
 		# [MANUAL_INIT]
@@ -64,7 +62,7 @@ class spawn_objectsSM(Behavior):
 
 
 	def create(self):
-		# x:902 y:42, x:34 y:553
+		# x:794 y:374, x:130 y:365
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
 
 		# Additional creation code can be added inside the following tags
@@ -74,29 +72,35 @@ class spawn_objectsSM(Behavior):
 
 
 		with _state_machine:
-			# x:366 y:23
+			# x:38 y:29
 			OperatableStateMachine.add('table',
 										spawnObjectState(model_name=self.table, object_file_path=self.table_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.item_pose_x, pose_y=self.item_pose_y, pose_z=self.item_pose_z),
-										transitions={'continue': 'coke_can', 'failed': 'failed'},
+										transitions={'continue': 'soda_can', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
 
-			# x:34 y:25
-			OperatableStateMachine.add('side_wall',
-										spawnObjectState(model_name=self.side_wall, object_file_path=self.side_wall_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.side_wall_x, pose_y=self.side_wall_y, pose_z=self.item_pose_z),
-										transitions={'continue': 'wall_1', 'failed': 'failed'},
-										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
+			# x:724 y:153
+			OperatableStateMachine.add('point_cloud_state',
+										self.use_behavior(point_cloud_stateSM, 'point_cloud_state'),
+										transitions={'finished': 'finished', 'failed': 'failed'},
+										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit})
 
-			# x:195 y:23
-			OperatableStateMachine.add('wall_1',
-										spawnObjectState(model_name=self.wall_1, object_file_path=self.wall_1_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.wall_1_pose_x, pose_y=self.wall_1_pose_y, pose_z=self.item_pose_z),
-										transitions={'continue': 'table', 'failed': 'failed'},
-										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
-
-			# x:535 y:24
-			OperatableStateMachine.add('coke_can',
+			# x:238 y:31
+			OperatableStateMachine.add('soda_can',
 										spawnObjectState(model_name=self.demo_cube, object_file_path=self.coke_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.grab_item_pose_x, pose_y=self.grab_item_pose_y, pose_z=self.grab_item_pose_z),
-										transitions={'continue': 'finished', 'failed': 'failed'},
+										transitions={'continue': 'torso_action', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
+
+			# x:417 y:37
+			OperatableStateMachine.add('torso_action',
+										self.use_behavior(torso_actionSM, 'torso_action'),
+										transitions={'finished': 'head_move', 'failed': 'failed'},
+										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit})
+
+			# x:660 y:38
+			OperatableStateMachine.add('head_move',
+										self.use_behavior(head_moveSM, 'head_move'),
+										transitions={'finished': 'point_cloud_state', 'failed': 'failed'},
+										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit})
 
 
 		return _state_machine
