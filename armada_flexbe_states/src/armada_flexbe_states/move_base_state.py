@@ -83,6 +83,8 @@ class MoveBaseState(EventState):
         goal.target_pose.header.frame_id = "map"
         # goal.target_pose.header.stamp.secs = 5.0
 
+
+
         # Send the action goal for execution
         try:
             self._client.send_goal(self._action_topic, goal)

@@ -50,6 +50,8 @@ class GraspingClient(object):
 
         # insert objects to scene
         objects = list()
+#        rospy.loginfo("printing find_result...%s?" % find_result)
+
         idx = -1
         for obj in find_result.objects:
             idx += 1
@@ -143,9 +145,7 @@ class GraspingClient(object):
             l.place_pose.pose = rotate_pose_msg_by_euler_angles(l.place_pose.pose, 0, 0, 2 * pi / m)
             places.append(copy.deepcopy(l))
 
-        success, place_result = self.pickplace.place_with_retry(block.name,
-                                                                places,
-                                                                scene=self.scene)
+        success, place_result = self.pickplace.place_with_retry(block.name, places, scene=self.scene)
         return success
 
     def tuck(self):
@@ -188,7 +188,7 @@ if __name__ == "__main__":
 
     # Tuck the arm
     rospy.loginfo("Tuck...")
-    grasping_client.tuck()
+#    grasping_client.tuck()
 
     # Place the block
     while not rospy.is_shutdown():
@@ -196,11 +196,13 @@ if __name__ == "__main__":
         rospy.loginfo("Placing object...")
         pose = PoseStamped()
         pose.pose = cube.primitive_poses[0]
-        pose.pose.position.z += 0.05
+        pose.pose.position.y *= -1.0
+        pose.pose.position.z += 0.02
         pose.header.frame_id = cube.header.frame_id
         if grasping_client.place(cube, pose):
-           break
-           rospy.logwarn("Placing failed.")
+            cube_in_grapper = False
+            break
+        rospy.logwarn("Placing failed.")
 
     # Tuck the arm, lower the torso
     rospy.loginfo("Tuck again...")

@@ -80,7 +80,6 @@ class PointHeadState(EventState):
         goal.target.point.y = self._y
         goal.target.point.z = self._z
         goal.min_duration = rospy.Duration(duration)
-        rospy.logerr("self.y = %.1f", self._z)
 
         try:
                     self._client.send_goal(self._action_topic, goal)
