@@ -4,6 +4,12 @@ import rospy
 from flexbe_core import EventState, Logger
 
 
+'''
+Created on Wed Jul 20 2022
+@author: Dan Choy
+'''
+
+
 class stepIteratorState(EventState):
         '''
         Example for a state to demonstrate which functionality is available for state implementation.

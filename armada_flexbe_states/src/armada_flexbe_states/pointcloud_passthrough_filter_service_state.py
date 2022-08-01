@@ -7,6 +7,13 @@ from flexbe_core.proxy import ProxyServiceCaller
 from armada_flexbe_utilities.srv import PointCloudPassthroughFilter, PointCloudPassthroughFilterResponse, PointCloudPassthroughFilterRequest
 
 
+'''
+Created on Wed Jul 20 2022
+@author: Dan Choy
+'''
+
+
+
 class pointCloudPassthroughFilterState(EventState):
     '''
     Example for a state to demonstrate which functionality is available for state implementation.
@@ -33,12 +40,12 @@ class pointCloudPassthroughFilterState(EventState):
                                                    input_keys = ['pointcloud_in'],
                                                    output_keys = ['pointcloud_out'])
 
-            self._x_min = x_min
-            self._x_max = x_max
-            self._y_min = y_min
-            self._y_max = y_max
-            self._z_min = z_min
-            self._z_max = z_max
+            self._x_min = x_min / 100
+            self._x_max = x_max / 100
+            self._y_min = y_min / 100
+            self._y_max = y_max / 100
+            self._z_min = z_min / 100
+            self._z_max = z_max / 100
 
     def execute(self, userdata):
             # This method is called periodically while the state is active.

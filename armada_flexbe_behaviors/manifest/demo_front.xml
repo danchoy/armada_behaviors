@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="demo_front">
+
+	<executable package_path="armada_flexbe_behaviors.demo_front_sm" class="demo_frontSM" />
+	<tagstring>demo_front</tagstring>
+	<author>Dan Choy</author>
+	<date>Mon Aug 01 2022</date>
+	<description>
+		pick and place demo
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="spawn_objects_front" />
+	<contains name="graspable_update_scene" />
+
+	<!-- Available Parameters -->
+
+</behavior>

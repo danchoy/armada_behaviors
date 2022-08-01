@@ -17,6 +17,13 @@ from geometry_msgs.msg import PoseStamped
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+
+
+'''
+Created on Wed Jul 20 2022
+@author: Dan Choy
+'''
+
 class GraspingClient(object):
 
     def __init__(self):

@@ -43,7 +43,7 @@ class spawn_objects_frontSM(Behavior):
 		self.add_parameter('item_pose_z', 0)
 		self.add_parameter('grab_item_pose_z', 200)
 		self.add_parameter('theta', -45)
-		self.add_parameter('grab_item_pose_x', 90)
+		self.add_parameter('grab_item_pose_x', 80)
 		self.add_parameter('grab_item_pose_y', 0)
 		self.add_parameter('coke_path', '/home/csrobot/.gazebo/gazebo_models/demo_cube/model.sdf')
 

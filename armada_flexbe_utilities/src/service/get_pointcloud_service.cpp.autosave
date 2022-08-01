@@ -21,7 +21,7 @@ using namespace pcl;
  * @param[out] res sensor_msgs/PointCloud2 PointCloud2 message.
  * @return Bool Service completion result.
  */
-bool getPointCloud(armada_flexbe_utilities::GetPointCloud::Request &req,
+bool getAvgXYZFromPointCloud(armada_flexbe_utilities::GetPointCloud::Request &req,
                    armada_flexbe_utilities::GetPointCloud::Response &res)
 {
   ROS_WARN("Executing GetPointCloud Service");

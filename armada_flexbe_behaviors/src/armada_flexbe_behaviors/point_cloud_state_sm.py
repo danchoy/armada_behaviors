@@ -38,11 +38,11 @@ class point_cloud_stateSM(Behavior):
 		# parameters of this behavior
 		self.add_parameter('topic', '/head_camera/depth_registered/points')
 		self.add_parameter('x_min', 0)
-		self.add_parameter('y_min', -1)
-		self.add_parameter('z_min', 0)
-		self.add_parameter('x_max', 2)
-		self.add_parameter('y_max', 1)
-		self.add_parameter('z_max', 2)
+		self.add_parameter('y_min', -100)
+		self.add_parameter('z_min', 100)
+		self.add_parameter('x_max', 150)
+		self.add_parameter('y_max', 100)
+		self.add_parameter('z_max', 200)
 		self.add_parameter('publish_topic', 'trans_cloud')
 
 		# references to used behaviors

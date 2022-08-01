@@ -10,11 +10,12 @@ from tf import transformations
 import rospy
 
 
-"""
-Created on 11/19/2015
 
-@author: Spyros Maniatopoulos
-"""
+'''
+Created on Wed Jul 20 2022
+@author: Dan Choy
+'''
+
 
 class MoveBaseState(EventState):
     """

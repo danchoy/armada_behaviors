@@ -35,7 +35,7 @@ class robot_moveSM(Behavior):
 		# parameters of this behavior
 		self.add_parameter('theta', 5)
 		self.add_parameter('robot_goal_pose_x', 0)
-		self.add_parameter('robot_goal_pose_y', -700)
+		self.add_parameter('robot_goal_pose_y', -600)
 		self.add_parameter('robot_ori_pose_z', 0.8565)
 		self.add_parameter('robot_ori_pose_w', 0.516)
 		self.add_parameter('torso_pose_x', 0.4)
@@ -76,7 +76,7 @@ class robot_moveSM(Behavior):
 			# x:215 y:26
 			OperatableStateMachine.add('move',
 										armada_flexbe_states__MoveBaseState(a=self.robot_goal_pose_x, b=self.robot_goal_pose_y, t=self.theta),
-										transitions={'arrived': 'wait', 'failed': 'failed'},
+										transitions={'arrived': 'finished', 'failed': 'torso_action'},
 										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off})
 
 			# x:380 y:22

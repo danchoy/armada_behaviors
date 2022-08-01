@@ -26,6 +26,13 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from moveit_msgs.msg import PlaceLocation, MoveItErrorCodes
 
 
+'''
+Created on Wed Jul 20 2022
+@author: Dan Choy
+'''
+
+
+
 # Send a trajectory to controller
 
 

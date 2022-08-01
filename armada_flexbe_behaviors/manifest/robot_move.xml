@@ -26,7 +26,7 @@
 			<max value="100" />
 		</param>
 
-		<param type="numeric" name="robot_goal_pose_y" default="-700" label="robot_goal_pose_y" hint="Sets the robot_goal_pose_y">
+		<param type="numeric" name="robot_goal_pose_y" default="-600" label="robot_goal_pose_y" hint="Sets the robot_goal_pose_y">
 			<min value="-1000" />
 			<max value="1000" />
 		</param>

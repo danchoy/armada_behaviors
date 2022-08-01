@@ -6,6 +6,13 @@ from gazebo_msgs.srv import DeleteModel
 from geometry_msgs.msg import Pose
 
 
+'''
+Created on Wed Jul 20 2022
+@author: Dan Choy
+'''
+
+
+
 class snapshotCommanderState(EventState):
     '''
     Example for a state to demonstrate which functionality is available for state implementation.

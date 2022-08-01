@@ -6,6 +6,10 @@ from flexbe_core import EventState, Logger
 from gazebo_msgs.srv import SpawnModel
 from geometry_msgs.msg import Pose
 
+'''
+Created on Wed Jul 20 2022
+@author: Dan Choy
+'''
 
 class spawnObjectState(EventState):
     '''

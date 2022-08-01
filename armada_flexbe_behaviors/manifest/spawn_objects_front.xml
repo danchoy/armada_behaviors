@@ -54,7 +54,7 @@
 			<max value="360" />
 		</param>
 
-		<param type="numeric" name="grab_item_pose_x" default="90" label="grab_item_pose_x" hint="Sets the grab_item_pose_x">
+		<param type="numeric" name="grab_item_pose_x" default="80" label="grab_item_pose_x" hint="Sets the grab_item_pose_x">
 			<min value="-1000" />
 			<max value="1000" />
 		</param>

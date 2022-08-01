@@ -14,5 +14,26 @@
 	<!-- Contained Behaviors -->
 
 	<!-- Available Parameters -->
+	<params>
+
+		<param type="numeric" name="head_pose_x" default="0" label="head_pose_x" hint="Sets the head_pose_x">
+			<min value="0" />
+			<max value="1" />
+		</param>
+
+		<param type="numeric" name="head_pose_y" default="-800" label="head_pose_y" hint="Sets the head_pose_y">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="numeric" name="head_pose_z" default="50" label="head_pose_z" hint="Sets the head_pose_z">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="text" name="head_frame" default="map" label="head_frame" hint="Sets the head_frame" />
+
+	</params>
+
 
 </behavior>

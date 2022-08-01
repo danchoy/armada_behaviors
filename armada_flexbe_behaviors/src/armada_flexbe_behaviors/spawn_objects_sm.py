@@ -74,16 +74,16 @@ class spawn_objectsSM(Behavior):
 
 
 		with _state_machine:
-			# x:366 y:23
-			OperatableStateMachine.add('table',
-										spawnObjectState(model_name=self.table, object_file_path=self.table_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.item_pose_x, pose_y=self.item_pose_y, pose_z=self.item_pose_z),
-										transitions={'continue': 'coke_can', 'failed': 'failed'},
-										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
-
 			# x:34 y:25
 			OperatableStateMachine.add('side_wall',
 										spawnObjectState(model_name=self.side_wall, object_file_path=self.side_wall_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.side_wall_x, pose_y=self.side_wall_y, pose_z=self.item_pose_z),
 										transitions={'continue': 'wall_1', 'failed': 'failed'},
+										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
+
+			# x:366 y:23
+			OperatableStateMachine.add('table',
+										spawnObjectState(model_name=self.table, object_file_path=self.table_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.item_pose_x, pose_y=self.item_pose_y, pose_z=self.item_pose_z),
+										transitions={'continue': 'coke_can', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
 
 			# x:195 y:23

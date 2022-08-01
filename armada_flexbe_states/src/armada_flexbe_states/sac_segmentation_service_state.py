@@ -7,6 +7,12 @@ from flexbe_core.proxy import ProxyServiceCaller
 from armada_flexbe_utilities.srv import SacSegmentation, SacSegmentationResponse, SacSegmentationRequest
 
 
+'''
+Created on Wed Jul 20 2022
+@author: Dan Choy
+'''
+
+
 class pointCloudSacSegmentationState(EventState):
     '''
     Example for a state to demonstrate which functionality is available for state implementation.
@@ -38,6 +44,7 @@ class pointCloudSacSegmentationState(EventState):
             try:
               service_response = self._service.call(self._service_topic, userdata.pointcloud_in)
               userdata.pointcloud_out = service_response.cloud_out
+
               return 'continue'
             except:
               return 'failed'

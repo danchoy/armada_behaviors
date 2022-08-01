@@ -19,33 +19,33 @@
 		<param type="text" name="topic" default="/head_camera/depth_registered/points" label="topic" hint="Sets the topic" />
 
 		<param type="numeric" name="x_min" default="0" label="x_min" hint="Sets the x_min">
-			<min value="-10" />
-			<max value="10" />
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
-		<param type="numeric" name="y_min" default="-1" label="y_min" hint="Sets the y_min">
-			<min value="-10" />
-			<max value="10" />
+		<param type="numeric" name="y_min" default="-100" label="y_min" hint="Sets the y_min">
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
-		<param type="numeric" name="z_min" default="0" label="z_min" hint="Sets the z_min">
-			<min value="-10" />
-			<max value="10" />
+		<param type="numeric" name="z_min" default="100" label="z_min" hint="Sets the z_min">
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
-		<param type="numeric" name="x_max" default="2" label="x_max" hint="Sets the x_max">
-			<min value="-10" />
-			<max value="10" />
+		<param type="numeric" name="x_max" default="150" label="x_max" hint="Sets the x_max">
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
-		<param type="numeric" name="y_max" default="1" label="y_max" hint="Sets the y_max">
-			<min value="-10" />
-			<max value="10" />
+		<param type="numeric" name="y_max" default="100" label="y_max" hint="Sets the y_max">
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
-		<param type="numeric" name="z_max" default="2" label="z_max" hint="Sets the z_max">
-			<min value="-10" />
-			<max value="10" />
+		<param type="numeric" name="z_max" default="200" label="z_max" hint="Sets the z_max">
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
 		<param type="text" name="publish_topic" default="trans_cloud" label="publish_topic" hint="Sets the publish_topic" />

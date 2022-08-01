@@ -9,6 +9,8 @@
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
 from armada_flexbe_states.graspable_item import graspable_item
+from armada_flexbe_states.head_action_state import PointHeadState as armada_flexbe_states__PointHeadState
+from armada_flexbe_states.move_base_state import MoveBaseState as armada_flexbe_states__MoveBaseState
 from armada_flexbe_states.pick_and_place_state import pick_and_place
 from armada_flexbe_states.scene import update_scene
 from flexbe_states.wait_state import WaitState
@@ -33,6 +35,10 @@ class graspable_update_sceneSM(Behavior):
 		self.name = 'graspable_update_scene'
 
 		# parameters of this behavior
+		self.add_parameter('head_pose_x', 0)
+		self.add_parameter('head_pose_y', -800)
+		self.add_parameter('head_pose_z', 50)
+		self.add_parameter('head_frame', 'map')
 
 		# references to used behaviors
 
@@ -59,38 +65,50 @@ class graspable_update_sceneSM(Behavior):
 
 
 		with _state_machine:
-			# x:36 y:52
+			# x:393 y:24
 			OperatableStateMachine.add('wait_update',
 										WaitState(wait_time=2),
 										transitions={'done': 'update_scene'},
 										autonomy={'done': Autonomy.Off})
 
-			# x:716 y:35
+			# x:725 y:19
+			OperatableStateMachine.add('graspable_item',
+										graspable_item(),
+										transitions={'continue': 'pick_and_place_state', 'failed': 'failed'},
+										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
+										remapping={'object_list': 'object_list', 'object_block': 'object_block', 'object_grasps': 'object_grasps'})
+
+			# x:220 y:15
+			OperatableStateMachine.add('head_move',
+										armada_flexbe_states__PointHeadState(x=self.head_pose_x, y=self.head_pose_y, z=self.head_pose_z, frame_name=self.head_frame),
+										transitions={'continue': 'wait_update', 'failed': 'failed'},
+										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
+
+			# x:948 y:15
 			OperatableStateMachine.add('pick_and_place_state',
 										pick_and_place(),
 										transitions={'continue': 'finished', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'object_list': 'object_list', 'object_block': 'object_block', 'object_grasps': 'object_grasps'})
 
-			# x:152 y:55
+			# x:537 y:23
 			OperatableStateMachine.add('update_scene',
 										update_scene(),
 										transitions={'continue': 'graspable_item', 'failed': 'wait_update'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'object_list': 'object_list'})
 
-			# x:163 y:157
+			# x:247 y:100
 			OperatableStateMachine.add('wait_state',
 										WaitState(wait_time=4),
-										transitions={'done': 'graspable_item'},
+										transitions={'done': 'head_move'},
 										autonomy={'done': Autonomy.Off})
 
-			# x:472 y:63
-			OperatableStateMachine.add('graspable_item',
-										graspable_item(),
-										transitions={'continue': 'pick_and_place_state', 'failed': 'failed'},
-										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'object_list': 'object_list', 'object_block': 'object_block', 'object_grasps': 'object_grasps'})
+			# x:47 y:26
+			OperatableStateMachine.add('approch',
+										armada_flexbe_states__MoveBaseState(a=0, b=-710, t=5),
+										transitions={'arrived': 'wait_state', 'failed': 'failed'},
+										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off})
 
 
 		return _state_machine
