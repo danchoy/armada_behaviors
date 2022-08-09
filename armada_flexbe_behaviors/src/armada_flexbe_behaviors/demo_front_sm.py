@@ -66,7 +66,7 @@ class demo_frontSM(Behavior):
 			# x:292 y:31
 			OperatableStateMachine.add('stow',
 										stow(),
-										transitions={'continue': 'graspable_update_scene', 'failed': 'failed'},
+										transitions={'continue': 'graspable_update_scene', 'failed': 'stow'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
 
 			# x:553 y:41

@@ -27,7 +27,7 @@ class getGraspCandidateState(EventState):
         def __init__(self, combined_cloud_topic, grasp_candidates_topic):
                 # Declare outcomes, input_keys, and output_keys by calling the super constructor with the corresponding arguments.
                 super(getGraspCandidateState, self).__init__(outcomes = ['continue', 'failed'],
-                                                       input_keys = ['combined_pointcloud'],
+                                                       input_keys = ['pointcloud_out'],
                                                        output_keys = ['grasp_candidates'])
 
                 self._combined_cloud_topic = combined_cloud_topic
@@ -44,11 +44,13 @@ class getGraspCandidateState(EventState):
 
                 request = GetGraspCandidatesRequest()
                 request.grasp_candidates_topic = self._grasp_candidates_topic
-                request.combined_cloud = userdata.combined_pointcloud
+                request.combined_cloud = userdata.pointcloud_out
 
                 try:
                   service_response = self._service.call(self._service_topic, request)
                   userdata.grasp_candidates = service_response.grasp_msg_list
+                  Logger.loginfo('%s'% userdata.grasp_candidates)
+
                   return 'continue'
                 except:
                   return 'failed'

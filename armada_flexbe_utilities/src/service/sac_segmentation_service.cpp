@@ -36,9 +36,10 @@ bool sacSegmentation(armada_flexbe_utilities::SacSegmentation::Request &req,
   seg.setModelType (SACMODEL_PLANE);
   seg.setMethodType (SAC_RANSAC);
   seg.setMaxIterations (1000);
-  seg.setDistanceThreshold (0.009);
+  seg.setDistanceThreshold (0.022);
   seg.setInputCloud (temp_cloud);
   seg.segment (*inliers_plane, *coefficients_plane);
+
 
   ExtractIndices<PointXYZRGB> extract_indices;
   extract_indices.setInputCloud(temp_cloud);

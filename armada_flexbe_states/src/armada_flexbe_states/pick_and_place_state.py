@@ -127,7 +127,7 @@ class pick_and_place(EventState):
             m = 16  # number of possible place poses
             pi = 3.141592653589
             for i in range(0, m-1):
-                l.place_pose.pose = rotate_pose_msg_by_euler_angles(l.place_pose.pose, 0, 0, 2 * pi / m)
+                l.place_pose.pose = rotate_pose_msg_by_euler_angles(l.place_pose.pose, 0, 0, 5 * pi / m)
                 places.append(copy.deepcopy(l))
 
             success, place_result = self.pickplace.place_with_retry(block.name, places, scene=self.scene)

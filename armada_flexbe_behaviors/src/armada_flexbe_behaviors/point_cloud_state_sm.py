@@ -8,13 +8,12 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
+from armada_flexbe_states.calc_xyz_service import PCL_CalculateXYZ
 from armada_flexbe_states.concatenate_pointcloud_service_state import concatenatePointCloudState as armada_flexbe_states__concatenatePointCloudState
 from armada_flexbe_states.get_pointcloud_service_state import getPointCloudState as armada_flexbe_states__getPointCloudState
 from armada_flexbe_states.pointcloud_passthrough_filter_service_state import pointCloudPassthroughFilterState as armada_flexbe_states__pointCloudPassthroughFilterState
 from armada_flexbe_states.publish_pointcloud_state import publishPointCloudState as armada_flexbe_states__publishPointCloudState
 from armada_flexbe_states.sac_segmentation_service_state import pointCloudSacSegmentationState as armada_flexbe_states__pointCloudSacSegmentationState
-from armada_flexbe_states.snapshot_commander_state import snapshotCommanderState as armada_flexbe_states__snapshotCommanderState
-from armada_flexbe_states.step_iterator_state import stepIteratorState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -44,6 +43,7 @@ class point_cloud_stateSM(Behavior):
 		self.add_parameter('y_max', 100)
 		self.add_parameter('z_max', 200)
 		self.add_parameter('publish_topic', 'trans_cloud')
+		self.add_parameter('single_point_topic', 'single_point')
 
 		# references to used behaviors
 
@@ -57,7 +57,7 @@ class point_cloud_stateSM(Behavior):
 
 
 	def create(self):
-		# x:890 y:319, x:130 y:365
+		# x:1008 y:399, x:57 y:367
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
 		_state_machine.userdata.pointcloud_list = []
 		_state_machine.userdata.pointcloud_in = 0
@@ -74,54 +74,54 @@ class point_cloud_stateSM(Behavior):
 
 
 		with _state_machine:
-			# x:37 y:42
-			OperatableStateMachine.add('snapshotCommander',
-										armada_flexbe_states__snapshotCommanderState(),
-										transitions={'continue': 'concate_pc', 'take_snapshot': 'get_pc_state', 'failed': 'snapshot_iterator'},
-										autonomy={'continue': Autonomy.Off, 'take_snapshot': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'snapshot_pose_list': 'snapshot_pose_list', 'current_snapshot_step': 'current_snapshot_step', 'target_pose': 'target_pose'})
-
-			# x:236 y:175
+			# x:30 y:40
 			OperatableStateMachine.add('get_pc_state',
 										armada_flexbe_states__getPointCloudState(camera_topic=self.topic),
-										transitions={'continue': 'snapshot_iterator', 'failed': 'failed'},
+										transitions={'continue': 'concate_pc', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud_list': 'pointcloud_list'})
 
-			# x:577 y:36
-			OperatableStateMachine.add('passthrough_filter',
-										armada_flexbe_states__pointCloudPassthroughFilterState(x_min=self.x_min, x_max=self.x_max, y_min=self.y_min, y_max=self.y_max, z_min=self.z_min, z_max=self.z_max),
-										transitions={'continue': 'segmentation', 'failed': 'failed'},
+			# x:255 y:39
+			OperatableStateMachine.add('concate_pc',
+										armada_flexbe_states__concatenatePointCloudState(),
+										transitions={'continue': 'pc_passthrough_filter', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'pointcloud_in': 'combined_pointcloud', 'pointcloud_out': 'pointcloud_out'})
+										remapping={'pointcloud_list': 'pointcloud_list', 'combined_pointcloud': 'combined_pointcloud'})
 
-			# x:591 y:284
-			OperatableStateMachine.add('publish_pc',
+			# x:475 y:37
+			OperatableStateMachine.add('pc_passthrough_filter',
+										armada_flexbe_states__pointCloudPassthroughFilterState(x_min=self.x_min, x_max=self.x_max, y_min=self.y_min, y_max=self.y_max, z_min=self.z_min, z_max=self.z_max),
+										transitions={'continue': 'segmentation_state', 'failed': 'failed'},
+										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
+										remapping={'combined_pointcloud': 'combined_pointcloud', 'pointcloud_out': 'combined_pointcloud'})
+
+			# x:480 y:379
+			OperatableStateMachine.add('publish_pc_state',
 										armada_flexbe_states__publishPointCloudState(topic=self.publish_topic),
+										transitions={'continue': 'publish_single_point', 'failed': 'failed'},
+										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
+										remapping={'pointcloud': 'combined_pointcloud'})
+
+			# x:702 y:374
+			OperatableStateMachine.add('publish_single_point',
+										armada_flexbe_states__publishPointCloudState(topic=self.single_point_topic),
 										transitions={'continue': 'finished', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud': 'pointcloud_out'})
 
-			# x:585 y:164
-			OperatableStateMachine.add('segmentation',
+			# x:478 y:181
+			OperatableStateMachine.add('segmentation_state',
 										armada_flexbe_states__pointCloudSacSegmentationState(),
-										transitions={'continue': 'publish_pc', 'failed': 'failed'},
+										transitions={'continue': 'calculate_xyz', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'pointcloud_in': 'pointcloud_out', 'pointcloud_out': 'pointcloud_out'})
+										remapping={'pointcloud_in': 'combined_pointcloud', 'pointcloud_out': 'combined_pointcloud'})
 
-			# x:56 y:175
-			OperatableStateMachine.add('snapshot_iterator',
-										stepIteratorState(),
-										transitions={'continue': 'snapshotCommander', 'failed': 'failed'},
+			# x:706 y:248
+			OperatableStateMachine.add('calculate_xyz',
+										PCL_CalculateXYZ(),
+										transitions={'continue': 'publish_pc_state', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'iterator_in': 'current_snapshot_step', 'iterator_out': 'current_snapshot_step'})
-
-			# x:338 y:33
-			OperatableStateMachine.add('concate_pc',
-										armada_flexbe_states__concatenatePointCloudState(),
-										transitions={'continue': 'passthrough_filter', 'failed': 'failed'},
-										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'pointcloud_list': 'pointcloud_list', 'combined_pointcloud': 'combined_pointcloud'})
+										remapping={'pointcloud_in': 'combined_pointcloud', 'pointcloud_out': 'pointcloud_out'})
 
 
 		return _state_machine

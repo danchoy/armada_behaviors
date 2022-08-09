@@ -42,6 +42,9 @@ add_service_files(
   SacSegmentation.srv
   CalculateGraspWaypoints.srv
   GetGraspCandidates.srv
+  CalculateXYZ.srv
+  BasicGraspWaypoints.srv
+
 )
 
 ## Generate actions in the 'action' folder
@@ -78,6 +81,9 @@ add_executable(concatenate_pointcloud_service src/service/concatenate_pointcloud
 add_executable(get_pointcloud_service src/service/get_pointcloud_service.cpp)
 add_executable(pointcloud_passthrough_filter_service src/service/pointcloud_passthrough_filter_service.cpp)
 add_executable(sac_segmentation_service src/service/sac_segmentation_service.cpp)
+add_executable(calc_xyz_service src/service/calc_xyz_service.cpp)
+add_executable(basic_grasp_waypoint_service src/service/basic_grasp_waypoint_service.cpp)
+
 
 target_link_libraries(move_arm_cpp_server ${catkin_LIBRARIES})
 target_link_libraries(get_grasp_candidates_service ${catkin_LIBRARIES})
@@ -87,6 +93,9 @@ target_link_libraries(concatenate_pointcloud_service ${catkin_LIBRARIES})
 target_link_libraries(get_pointcloud_service ${catkin_LIBRARIES})
 target_link_libraries(pointcloud_passthrough_filter_service ${catkin_LIBRARIES})
 target_link_libraries(sac_segmentation_service ${catkin_LIBRARIES})
+target_link_libraries(calc_xyz_service ${catkin_LIBRARIES})
+target_link_libraries(basic_grasp_waypoint_service ${catkin_LIBRARIES})
+
 
 add_dependencies(move_arm_cpp_server armada_flexbe_utilities_generate_messages)
 add_dependencies(get_grasp_candidates_service armada_flexbe_utilities_generate_messages)
@@ -96,3 +105,6 @@ add_dependencies(concatenate_pointcloud_service armada_flexbe_utilities_generate
 add_dependencies(get_pointcloud_service armada_flexbe_utilities_generate_messages)
 add_dependencies(pointcloud_passthrough_filter_service armada_flexbe_utilities_generate_messages)
 add_dependencies(sac_segmentation_service armada_flexbe_utilities_generate_messages)
+add_dependencies(calc_xyz_service armada_flexbe_utilities_generate_messages)
+add_dependencies(basic_grasp_waypoint_service armada_flexbe_utilities_gencpp)
+

@@ -53,6 +53,8 @@ class calculateGraspWaypointsServiceState(EventState):
                 try:
                   service_response = self._service.call(self._service_topic, request)
                   userdata.grasp_waypoints_list = service_response.grasp_poses_list
+                  Logger.loginfo('%s'% userdata.grasp_waypoints_list )
+
                   return 'continue'
                 except:
                   return 'failed'

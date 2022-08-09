@@ -1,0 +1,36 @@
+<launch>
+
+  <arg name="robot" default="fetch"/>
+  <arg name="debug" default="false"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="map_file" default="$(find fetch_gazebo_demo)/maps/maps.yaml" />
+
+  <arg name="use_nav" default="false" />
+  <arg name="build_map" default="true" />
+
+  <!-- Start Gazebo with a blank world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+  <!-- Oh, you wanted a robot? -->
+  <include file="$(find fetch_gazebo)/launch/include/$(arg robot).launch.xml" />
+
+  <node pkg="rviz" name="rviz" type="rviz" args="-d $(find armada_Dan_flexbe_states)/src/rviz/move.rviz" />
+
+  <include file="$(find fetch_navigation)/launch/fetch_nav.launch" if="$(arg use_nav)">
+    <arg name="map_file" value="$(arg map_file)" />
+  </include>
+
+  <include file="$(find fetch_navigation)/launch/build_map.launch" if="$(arg build_map)" >
+  </include>
+
+  <include file="$(find flexbe_app)/launch/flexbe_full.launch" />
+
+
+</launch>

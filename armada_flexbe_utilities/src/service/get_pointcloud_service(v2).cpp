@@ -10,8 +10,6 @@
 #include <pcl/filters/extract_indices.h>
 #include <pcl/filters/passthrough.h>
 
-using namespace pcl;
-
 /**
  * Add current camera pointcloud msg to array of pointcloud messages.
  *
@@ -21,22 +19,31 @@ using namespace pcl;
  * @param[out] res sensor_msgs/PointCloud2 PointCloud2 message.
  * @return Bool Service completion result.
  */
-bool getAvgXYZFromPointCloud(armada_flexbe_utilities::GetPointCloud::Request &req,
+bool getPointCloud(armada_flexbe_utilities::GetPointCloud::Request &req,
                    armada_flexbe_utilities::GetPointCloud::Response &res)
 {
   ROS_WARN("Executing GetPointCloud Service");
   ros::Duration timeout(5);
+
+  // subscribe to the pointcloud topic for just one message
+  // this is a one-line subscriber, it doesn't need a distinct callback but it's nothing special
   sensor_msgs::PointCloud2ConstPtr pointcloud2_msg = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(req.camera_topic, timeout);
 
-  PointCloud<PointXYZRGB> temp_transform_cloud;
+  // -------------------------------------- now we have a message --------------------------------------
+
+  // create a pcl::pointcloud object
+  pcl::PointCloud<pcl::PointXYZRGB> temp_transform_cloud;
+  // turn sensor_msgs pointcloud into pcl pointcloud that we can work with (now it is workable data but no longer a message)
   fromROSMsg(*pointcloud2_msg, temp_transform_cloud);
 
+  // -------------------------------------- now we have a piece of data we created from the message --------------------------------------
+
+  // now we can do whatever we want with the PointXYZRGB object we have populated
+  // what we want to do here is transform it into the correct frame
   ros::Time stamp = ros::Time(0);
   tf::StampedTransform transform;
   tf::TransformListener listener;
-
   pcl_conversions::toPCL(stamp, temp_transform_cloud.header.stamp);
-
   try
   {
     listener.waitForTransform("base_link", temp_transform_cloud.header.frame_id, stamp, ros::Duration(5.0));
@@ -45,31 +52,18 @@ bool getAvgXYZFromPointCloud(armada_flexbe_utilities::GetPointCloud::Request &re
   {
     ROS_ERROR("%s", err.what());
   }
-
-  int sum_x = 0;
-  int sum_y = 0;
-  int sum_z = 0;
-
-  int size = temp_transform_cloud.points.size();
-  for (i=0;i<size;i++) {
-    sum_x += temp_transform_cloud.points[i].x;
-    sum_y += temp_transform_cloud.points[i].y;
-    sum_z += temp_transform_cloud.points[i].z;
-  }
-
-  int avg_x = sum_x / i;
-  int avg_y = sum_y / i;
-  int avg_z = sum_y / i;
-
-  ROS_INFO_STREAM("avg x point position: " << avg_x);
-  ROS_INFO_STREAM("avg y point position: " << avg_y);
-  ROS_INFO_STREAM("avg z point position: " << avg_z);
-
   pcl_ros::transformPointCloud("base_link", temp_transform_cloud, temp_transform_cloud, listener);
 
+  // -------------------------------------- we have transformed our new data into something useful
+
+  // create a new sensor_msgs pointcloud object that we can send (this is a message type)
   sensor_msgs::PointCloud2 transformed_pointcloud_msg;
+  // turn the transformed pointcloud back into a message
   toROSMsg(temp_transform_cloud, transformed_pointcloud_msg);
 
+  // -------------------------------------- we turned our data back into a message we can send somewhere else for further processing --------------------------------------
+
+  // return the message as a response to the service request (so it can be sent out by someone else on some topic)
   res.cloud_out = transformed_pointcloud_msg;
   ROS_WARN("Finished GetPointCloud Service");
   return true;

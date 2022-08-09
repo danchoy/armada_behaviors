@@ -7,7 +7,7 @@ from flexbe_core.proxy import ProxyServiceCaller
 from armada_flexbe_utilities.srv import PointCloudPassthroughFilter, PointCloudPassthroughFilterResponse, PointCloudPassthroughFilterRequest
 
 
-class pointCloudPassthroughFilterState(EventState):
+class pointCloudPassthroughFilterState_(EventState):
         '''
         Example for a state to demonstrate which functionality is available for state implementation.
         This example lets the behavior wait until the given target_time has passed since the behavior has been started.

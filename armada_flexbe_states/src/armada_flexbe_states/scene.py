@@ -83,13 +83,7 @@ class update_scene(EventState):
     def on_enter(self, userdata):
             # This method is called when the state becomes active, i.e. a transition from another state to this one is taken.
             # It is primarily used to start actions which are associated with this state.
-#            self.scene = PlanningSceneInterface("base_link")
-#            self.pickplace = PickPlaceInterface("arm", "gripper", verbose=True)
-#            self.move_group = MoveGroupInterface("arm", "base_link")
 
-#            self._action_topic = "basic_grasping_perception/find_objects"
-#            rospy.loginfo("Waiting for %s..." % self._action_topic)
-#            self._client = ProxyActionClient({self._action_topic: FindGraspableObjectsAction})
             goal = FindGraspableObjectsGoal()
             goal.plan_grasps = True
 
@@ -101,6 +95,8 @@ class update_scene(EventState):
 
             # find objects
             find_result = self._client.get_result(self._action_topic)
+#            rospy.loginfo("%s"% find_result)
+
 
             # remove previous objects
             for name in self.scene.getKnownCollisionObjects():

@@ -44,6 +44,7 @@ class pointCloudSacSegmentationState(EventState):
             try:
               service_response = self._service.call(self._service_topic, userdata.pointcloud_in)
               userdata.pointcloud_out = service_response.cloud_out
+#              Logger.loginfo('%s'% userdata.pointcloud_out)
 
               return 'continue'
             except:
@@ -52,6 +53,7 @@ class pointCloudSacSegmentationState(EventState):
     def on_enter(self, userdata):
             # This method is called when the state becomes active, i.e. a transition from another state to this one is taken.
             # It is primarily used to start actions which are associated with this state.
+
 
             Logger.loginfo('attempting to segment planes from pointcloud...' )
 

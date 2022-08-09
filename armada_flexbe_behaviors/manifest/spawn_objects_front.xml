@@ -13,13 +13,12 @@
 
 	<!-- Contained Behaviors -->
 	<contains name="point_cloud_state" />
-	<contains name="torso_action" />
 	<contains name="head_move" />
 
 	<!-- Available Parameters -->
 	<params>
 
-		<param type="text" name="table_path" default="/home/csrobot/.gazebo/gazebo_models/table/model.sdf" label="table_path" hint="Sets the table_path" />
+		<param type="text" name="table_path" default="/home/csrobot/.gazebo/gazebo_models/table/front_model.sdf" label="table_path" hint="Sets the table_path" />
 
 		<param type="text" name="table" default="table" label="table" hint="Sets the table" />
 
@@ -27,9 +26,9 @@
 
 		<param type="text" name="frame" default="world" label="frame" hint="Sets the frame" />
 
-		<param type="text" name="demo_cube" default="demo_cube" label="demo_cube" hint="Sets the demo_cube" />
+		<param type="text" name="graspable_item" default="demo_cube" label="graspable_item" hint="Sets the graspable_item" />
 
-		<param type="numeric" name="item_pose_x" default="150" label="item_pose_x" hint="Sets the item_pose_x">
+		<param type="numeric" name="item_pose_x" default="110" label="item_pose_x" hint="Sets the item_pose_x">
 			<min value="-1000" />
 			<max value="1000" />
 		</param>
@@ -64,7 +63,19 @@
 			<max value="1000" />
 		</param>
 
-		<param type="text" name="coke_path" default="/home/csrobot/.gazebo/gazebo_models/demo_cube/model.sdf" label="coke_path" hint="Sets the coke_path" />
+		<param type="text" name="coke_path" default="/home/csrobot/.gazebo/gazebo_models/coke_can/model.sdf" label="coke_path" hint="Sets the coke_path" />
+
+		<param type="numeric" name="item_pose_w" default="500" label="item_pose_w" hint="Sets the item_pose_w">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="numeric" name="torso_pose_x" default="0.4" label="torso_pose_x" hint="Sets the torso_pose_x">
+			<min value="0" />
+			<max value="1" />
+		</param>
+
+		<param type="text" name="torso_joint_name" default="torso_lift_joint" label="torso_joint_name" hint="Sets the torso_joint_name" />
 
 	</params>
 

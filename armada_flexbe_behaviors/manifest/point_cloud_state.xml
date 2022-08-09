@@ -50,6 +50,8 @@
 
 		<param type="text" name="publish_topic" default="trans_cloud" label="publish_topic" hint="Sets the publish_topic" />
 
+		<param type="text" name="single_point_topic" default="single_point" label="single_point_topic" hint="Sets the single_point_topic" />
+
 	</params>
 
 

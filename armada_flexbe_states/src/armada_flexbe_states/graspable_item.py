@@ -95,10 +95,12 @@ class graspable_item(EventState):
 #            self._client = ProxyActionClient({self._action_topic: FindGraspableObjectsAction})
 
         rospy.loginfo("In enter...")
+        rospy.loginfo("%s"% userdata.object_list)
 
 
         rospy.Duration(5.0)
         objects = userdata.object_list
+
 
         graspable = None
         for obj in objects:

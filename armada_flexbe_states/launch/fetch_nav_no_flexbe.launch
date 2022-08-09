@@ -1,0 +1,63 @@
+<launch>
+
+    <arg name="robot" default="fetch"/>
+    <arg name="debug" default="false"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="map_file" default="$(find fetch_gazebo_demo)/maps/maps.yaml" />
+
+    <arg name="use_nav" default="true" />
+    <arg name="build_map" default="false" />
+
+    <!-- Start Gazebo with a blank world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- <arg name="world_name" value="$(find armada_flexbe_states)/src/world/gazebo_world.world"/>-->
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="gui" value="$(arg gui)" />
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="headless" value="$(arg headless)"/>cat
+    </include>
+
+    <!-- Oh, you wanted a robot? -->
+    <include file="$(find fetch_gazebo)/launch/include/$(arg robot).launch.xml" />
+
+    <!-- Start MoveIt -->
+    <include file="$(find fetch_moveit_config)/launch/move_group.launch" >
+        <arg name="info" value="true"/><!-- publish grasp markers -->
+        <arg name="srdf" value="$(find fetch_gazebo)/robots/fetch.gazebo.srdf.xacro"/>
+    </include>
+
+    <!-- Start Perception -->
+    <node name="basic_grasping_perception" pkg="simple_grasping" type="basic_grasping_perception" >
+      <rosparam command="load" file="$(find simple_grasping)/config/simple_grasping.yaml" />
+    </node>
+
+    <include file="$(find fetch_navigation)/launch/fetch_nav.launch" >
+        <arg name="map_file" value="$(find fetch_gazebo_demo)/maps/maps_with_walls.yaml" />
+    </include>
+
+
+
+    <node pkg="rviz" name="rviz" type="rviz" args="-d $(find armada_flexbe_states)/src/rviz/move.rviz" />
+
+    <node name="concatenate_pointcloud_service" pkg="armada_flexbe_utilities" type="concatenate_pointcloud_service" output="screen" />
+    <node name="move_arm_cpp_server" pkg="armada_flexbe_utilities" type="move_arm_cpp_server" output="screen" />
+
+
+    <node name="get_pointcloud_service" pkg="armada_flexbe_utilities" type="get_pointcloud_service" output="screen" />
+    <node name="pointcloud_passthrough_filter_service" pkg="armada_flexbe_utilities" type="pointcloud_passthrough_filter_service" output="screen" />
+    <node name="sac_segmentation_service" pkg="armada_flexbe_utilities" type="sac_segmentation_service" output="screen" />
+    <node name="get_grasp_candidates_service" pkg="armada_flexbe_utilities" type="get_grasp_candidates_service" output="screen" />
+    <node name="grasp_waypoint_service" pkg="armada_flexbe_utilities" type="grasp_waypoint_service" output="screen" />
+    <node name="calc_xyz_service" pkg="armada_flexbe_utilities" type="calc_xyz_service" output="screen" />
+    <node name="basic_grasp_waypoint_service" pkg="armada_flexbe_utilities" type="basic_grasp_waypoint_service" output="screen" />
+
+
+
+
+
+
+
+</launch>
+

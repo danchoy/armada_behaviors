@@ -47,10 +47,11 @@ class spawn_objectsSM(Behavior):
 		self.add_parameter('side_wall_y', 0)
 		self.add_parameter('wall_1_path', '/home/csrobot/building_editor_models/wall_1/model.sdf')
 		self.add_parameter('wall_1_pose_x', 100)
-		self.add_parameter('wall_1_pose_y', -100)
+		self.add_parameter('wall_1_pose_y', -200)
 		self.add_parameter('wall_1', 'wall_1')
 		self.add_parameter('grab_item_pose_x', 30)
 		self.add_parameter('grab_item_pose_y', -765)
+		self.add_parameter('item_pose_w', 500)
 
 		# references to used behaviors
 
@@ -76,25 +77,25 @@ class spawn_objectsSM(Behavior):
 		with _state_machine:
 			# x:34 y:25
 			OperatableStateMachine.add('side_wall',
-										spawnObjectState(model_name=self.side_wall, object_file_path=self.side_wall_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.side_wall_x, pose_y=self.side_wall_y, pose_z=self.item_pose_z),
+										spawnObjectState(model_name=self.side_wall, object_file_path=self.side_wall_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.side_wall_x, pose_y=self.side_wall_y, pose_z=self.item_pose_z, pose_w=self.item_pose_w),
 										transitions={'continue': 'wall_1', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
 
 			# x:366 y:23
 			OperatableStateMachine.add('table',
-										spawnObjectState(model_name=self.table, object_file_path=self.table_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.item_pose_x, pose_y=self.item_pose_y, pose_z=self.item_pose_z),
+										spawnObjectState(model_name=self.table, object_file_path=self.table_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.item_pose_x, pose_y=self.item_pose_y, pose_z=self.item_pose_z, pose_w=self.item_pose_w),
 										transitions={'continue': 'coke_can', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
 
 			# x:195 y:23
 			OperatableStateMachine.add('wall_1',
-										spawnObjectState(model_name=self.wall_1, object_file_path=self.wall_1_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.wall_1_pose_x, pose_y=self.wall_1_pose_y, pose_z=self.item_pose_z),
+										spawnObjectState(model_name=self.wall_1, object_file_path=self.wall_1_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.wall_1_pose_x, pose_y=self.wall_1_pose_y, pose_z=self.item_pose_z, pose_w=self.item_pose_w),
 										transitions={'continue': 'table', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
 
 			# x:535 y:24
 			OperatableStateMachine.add('coke_can',
-										spawnObjectState(model_name=self.demo_cube, object_file_path=self.coke_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.grab_item_pose_x, pose_y=self.grab_item_pose_y, pose_z=self.grab_item_pose_z),
+										spawnObjectState(model_name=self.demo_cube, object_file_path=self.coke_path, robot_namespace=self.namespace, reference_frame=self.frame, pose_x=self.grab_item_pose_x, pose_y=self.grab_item_pose_y, pose_z=self.grab_item_pose_z, pose_w=self.item_pose_w),
 										transitions={'continue': 'finished', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
 

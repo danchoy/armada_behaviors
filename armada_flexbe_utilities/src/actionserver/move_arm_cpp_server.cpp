@@ -127,7 +127,7 @@ int main(int argc, char** argv)
   ros::AsyncSpinner spinner(2);
   spinner.start();
 
-  CartesianPlanningCPPAction cartesian_planning_cpp_server(nh, "manipulator");
+  CartesianPlanningCPPAction cartesian_planning_cpp_server(nh, "arm");
 
   while(ros::ok())
   {

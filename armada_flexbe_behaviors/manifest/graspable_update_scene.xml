@@ -17,8 +17,8 @@
 	<params>
 
 		<param type="numeric" name="head_pose_x" default="0" label="head_pose_x" hint="Sets the head_pose_x">
-			<min value="0" />
-			<max value="1" />
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
 		<param type="numeric" name="head_pose_y" default="-800" label="head_pose_y" hint="Sets the head_pose_y">

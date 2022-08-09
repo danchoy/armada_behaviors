@@ -74,9 +74,9 @@
 			<max value="100" />
 		</param>
 
-		<param type="numeric" name="wall_1_pose_y" default="-100" label="wall_1_pose_y" hint="Sets the wall_1_pose_y">
-			<min value="-100" />
-			<max value="100" />
+		<param type="numeric" name="wall_1_pose_y" default="-200" label="wall_1_pose_y" hint="Sets the wall_1_pose_y">
+			<min value="-1000" />
+			<max value="1000" />
 		</param>
 
 		<param type="text" name="wall_1" default="wall_1" label="wall_1" hint="Sets the wall_1" />
@@ -87,6 +87,11 @@
 		</param>
 
 		<param type="numeric" name="grab_item_pose_y" default="-765" label="grab_item_pose_y" hint="Sets the grab_item_pose_y">
+			<min value="-1000" />
+			<max value="1000" />
+		</param>
+
+		<param type="numeric" name="item_pose_w" default="500" label="item_pose_w" hint="Sets the item_pose_w">
 			<min value="-1000" />
 			<max value="1000" />
 		</param>

@@ -26,7 +26,7 @@ class spawnObjectState(EventState):
 
     '''
 
-    def __init__(self, model_name, object_file_path, robot_namespace, reference_frame, pose_x, pose_y, pose_z):
+    def __init__(self, model_name, object_file_path, robot_namespace, reference_frame, pose_x, pose_y, pose_z, pose_w):
             # Declare outcomes, input_keys, and output_keys by calling the super constructor with the corresponding arguments.
             super(spawnObjectState, self).__init__(outcomes = ['continue', 'failed'])
 
@@ -38,6 +38,7 @@ class spawnObjectState(EventState):
             self._pose_x = (pose_x / 100.0)
             self._pose_y = (pose_y / 100.0)
             self._pose_z = (pose_z / 100.0)
+            self._pose_w = (pose_w / 100.0)
 
 
 
@@ -52,10 +53,13 @@ class spawnObjectState(EventState):
             _pose_x = self._pose_x
             _pose_y = self._pose_y
             _pose_z = self._pose_z
+            _pose_w = self._pose_w
+
+
 
             # turn xyz coordinates into a Pose msg
             object_pose = Pose()
-            object_pose.orientation.w = 1.0
+            object_pose.orientation.w = _pose_w
             object_pose.position.x = _pose_x
             object_pose.position.y = _pose_y
             object_pose.position.z = _pose_z

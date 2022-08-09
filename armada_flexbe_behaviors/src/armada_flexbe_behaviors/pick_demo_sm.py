@@ -90,10 +90,10 @@ class pick_demoSM(Behavior):
 										transitions={'continue': 'stow_before_pick_state', 'failed': 'stow_before_pick_state'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off})
 
-			# x:779 y:38
+			# x:878 y:52
 			OperatableStateMachine.add('graspable_update_scene',
 										self.use_behavior(graspable_update_sceneSM, 'graspable_update_scene'),
-										transitions={'finished': 'stow_before_pick_state', 'failed': 'failed'},
+										transitions={'finished': 'stow_after_place_state', 'failed': 'failed'},
 										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit})
 
 
