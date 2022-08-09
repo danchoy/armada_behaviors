@@ -81,6 +81,16 @@ bool calculateXYZ(armada_flexbe_utilities::CalculateXYZ::Request &req,
       x_max = temp_cloud->points[i].x;
     if (temp_cloud->points[i].x < x_min)
       x_min = temp_cloud->points[i].x;
+
+    if (temp_cloud->points[i].y > y_max)
+      y_max = temp_cloud->points[i].y;
+    if (temp_cloud->points[i].y < y_min)
+      y_min = temp_cloud->points[i].y;
+
+    if (temp_cloud->points[i].z > z_max)
+      z_max = temp_cloud->points[i].z;
+    if (temp_cloud->points[i].z < z_min)
+      z_min = temp_cloud->points[i].z;
   }
 
   ROS_INFO_STREAM("x_max: " << x_max);
@@ -89,33 +99,12 @@ bool calculateXYZ(armada_flexbe_utilities::CalculateXYZ::Request &req,
   ROS_INFO_STREAM("x_middle: " << x_mid);
 
 
-
-
-  for (i = 0 ;i<size;i++) {
-    if (temp_cloud->points[i].y > y_max)
-      y_max = temp_cloud->points[i].y;
-    if (temp_cloud->points[i].y < y_min)
-      y_min = temp_cloud->points[i].y;
-  }
-
   ROS_INFO_STREAM("y_max: " << y_max);
   ROS_INFO_STREAM("y_min: " << y_min);
   // we need to adjust for the simulated camera _optical_frame offset (+0.02m)
   double y_mid = (y_max - y_min) / 2 + y_min + 0.01;
   ROS_INFO_STREAM("y_middle: " << y_mid);
 
-
-
-
-  for (i = 0;i<size;i++) {
-
-//    ROS_INFO_STREAM("z_max: " << temp_cloud->points[i].z);
-    if (temp_cloud->points[i].z > z_max)
-      z_max = temp_cloud->points[i].z;
-    if (temp_cloud->points[i].z < z_min)
-      z_min = temp_cloud->points[i].z;
-
-  }
 
   ROS_INFO_STREAM("z_max: " << z_max);
   ROS_INFO_STREAM("z_min: " << z_min);
