@@ -9,11 +9,11 @@
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
 from armada_flexbe_states.calc_xyz_service import PCL_CalculateXYZ
-from armada_flexbe_states.concatenate_pointcloud_service_state import concatenatePointCloudState as armada_flexbe_states__concatenatePointCloudState
-from armada_flexbe_states.get_pointcloud_service_state import getPointCloudState as armada_flexbe_states__getPointCloudState
-from armada_flexbe_states.pointcloud_passthrough_filter_service_state import pointCloudPassthroughFilterState as armada_flexbe_states__pointCloudPassthroughFilterState
-from armada_flexbe_states.publish_pointcloud_state import publishPointCloudState as armada_flexbe_states__publishPointCloudState
-from armada_flexbe_states.sac_segmentation_service_state import pointCloudSacSegmentationState as armada_flexbe_states__pointCloudSacSegmentationState
+from armada_flexbe_states.concatenate_pointcloud_service_state import concatenatePointCloudState
+from armada_flexbe_states.get_pointcloud_service_state import getPointCloudState
+from armada_flexbe_states.pointcloud_passthrough_filter_service_state import pointCloudPassthroughFilterState
+from armada_flexbe_states.publish_pointcloud_state import publishPointCloudState
+from armada_flexbe_states.sac_segmentation_service_state import pointCloudSacSegmentationState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -76,42 +76,42 @@ class point_cloud_stateSM(Behavior):
 		with _state_machine:
 			# x:30 y:40
 			OperatableStateMachine.add('get_pc_state',
-										armada_flexbe_states__getPointCloudState(camera_topic=self.topic),
+										getPointCloudState(camera_topic=self.topic),
 										transitions={'continue': 'concate_pc', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud_list': 'pointcloud_list'})
 
 			# x:255 y:39
 			OperatableStateMachine.add('concate_pc',
-										armada_flexbe_states__concatenatePointCloudState(),
+										concatenatePointCloudState(),
 										transitions={'continue': 'pc_passthrough_filter', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud_list': 'pointcloud_list', 'combined_pointcloud': 'combined_pointcloud'})
 
 			# x:475 y:37
 			OperatableStateMachine.add('pc_passthrough_filter',
-										armada_flexbe_states__pointCloudPassthroughFilterState(x_min=self.x_min, x_max=self.x_max, y_min=self.y_min, y_max=self.y_max, z_min=self.z_min, z_max=self.z_max),
+										pointCloudPassthroughFilterState(x_min=self.x_min, x_max=self.x_max, y_min=self.y_min, y_max=self.y_max, z_min=self.z_min, z_max=self.z_max),
 										transitions={'continue': 'segmentation_state', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'combined_pointcloud': 'combined_pointcloud', 'pointcloud_out': 'combined_pointcloud'})
 
 			# x:480 y:379
 			OperatableStateMachine.add('publish_pc_state',
-										armada_flexbe_states__publishPointCloudState(topic=self.publish_topic),
+										publishPointCloudState(topic=self.publish_topic),
 										transitions={'continue': 'publish_single_point', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud': 'combined_pointcloud'})
 
-			# x:702 y:374
+			# x:750 y:444
 			OperatableStateMachine.add('publish_single_point',
-										armada_flexbe_states__publishPointCloudState(topic=self.single_point_topic),
+										publishPointCloudState(topic=self.single_point_topic),
 										transitions={'continue': 'finished', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud': 'pointcloud_out'})
 
 			# x:478 y:181
 			OperatableStateMachine.add('segmentation_state',
-										armada_flexbe_states__pointCloudSacSegmentationState(),
+										pointCloudSacSegmentationState(),
 										transitions={'continue': 'calculate_xyz', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'pointcloud_in': 'combined_pointcloud', 'pointcloud_out': 'combined_pointcloud'})
